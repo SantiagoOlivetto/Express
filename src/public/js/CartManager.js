@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { __dirname, apiProductsPath, apiCartsPath } from './utils.js'
+import { __dirname, apiProductsPath, apiCartsPath } from '../../utils.js'
 
 export const getProductById = (id) => {
     const product = JSON.parse(fs.readFileSync(apiProductsPath, "utf-8"))
@@ -52,7 +52,8 @@ export default class CartManager {
     const productExist = productsOnCart.find((product)=> product.id == pid)
     if (productExist) {
         productExist.quantity += 1
-        return await fs.promises.writeFile(this.path, JSON.stringify(this.carts)) 
+        await fs.promises.writeFile(this.path, JSON.stringify(this.carts)) 
+        return productExist
 
     }else {
 
@@ -61,8 +62,8 @@ export default class CartManager {
             const {title, id} = productFound
             const addProduct = {title: title, id: id, quantity: 1}
             cartFound.products = [...cartFound.products, addProduct]
-    
-            return await fs.promises.writeFile(this.path, JSON.stringify(this.carts)) 
+            await fs.promises.writeFile(this.path, JSON.stringify(this.carts)) 
+            return cartFound.products
         }
     }
     }

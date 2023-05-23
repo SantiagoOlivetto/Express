@@ -1,6 +1,6 @@
 import  express  from "express";
-import CartManager from "../CartManager.js";
-import { getProductById } from "../CartManager.js";
+import CartManager from "../public/js/CartManager.js";
+import { getProductById } from "../public/js/CartManager.js";
 
 export const routerCarts = express.Router()
 routerCarts.use(express.json())
@@ -25,10 +25,6 @@ routerCarts.post('/:cid/product/:pid', async (req, res) => {
     const cartId = req.params.cid
     const productId = req.params.pid
     const productOnCart = await cartManager.addProductCart(cartId, productId)
-    productOnCart
-    const productAdded = await getProductById(productId)
-    const {title, id} = productAdded
-    const productShow = {title, id}
-    return productAdded ? res.status(201).json({status: "succesfull", msg:"Product succesfully added to cart", data: productShow}) : res.status(500).json({status: "ERROR 500", msg: "adding product process failed", data: "no product added to cart"}) 
+    return productOnCart ? res.status(201).json({status: "succesfull", msg:"Product succesfully added to cart", data: productOnCart}) : res.status(500).json({status: "ERROR 500", msg: "adding product process failed", data: "no product added to cart"}) 
     
 })
