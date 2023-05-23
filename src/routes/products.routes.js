@@ -7,7 +7,7 @@ export const routerProducts = express.Router()
 routerProducts.use(bodyParser.json());
 routerProducts.use(express.json())
 
-const productManager = new ProductManager("./src/api/products.json");
+export const productManager = new ProductManager("./src/api/products.json");
 
 routerProducts.get('/',async (req, res) => {
     const productList = await productManager.getProducts()

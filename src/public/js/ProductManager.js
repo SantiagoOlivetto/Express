@@ -1,5 +1,6 @@
 // File system module
 import fs from "fs";
+
 // Array de productos
 export default class ProductManager {
 
@@ -107,4 +108,6 @@ export default class ProductManager {
     } 
     
 }
+export const productManager = new ProductManager("./src/api/products.json")
+
 
