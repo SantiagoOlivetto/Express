@@ -8,7 +8,7 @@ export default class ProductManager {
     {
         this.products = [],
         this.path = path
-        fs.existsSync(this.path) == false ? fs.writeFileSync(this.path, JSON.stringify(this.products)) : console.log(`${this.path} is currently running`) 
+        fs.existsSync(this.path) == false ? fs.writeFileSync(this.path, JSON.stringify(this.products)) : console.log(`products.json`) 
     }
     #idGenerator() {
         let idGenerated = 0
@@ -18,7 +18,7 @@ export default class ProductManager {
         }
         return ++idGenerated
     }
-    async addProducts (title, description, category, price, status, thumbnail, code, stock) {
+    async addProducts (title, description, category, price, thumbnail, code, stock, status) {
 
         this.products = JSON.parse(fs.readFileSync(this.path, "utf-8"))
         let newProduct
@@ -75,7 +75,7 @@ export default class ProductManager {
         const productFound = this.products.find((product) => product.id == id)
         return productFound ? productFound : false
     }
-    deleteProduct(pId) {
+    async deleteProduct(pId) {
         this.products = JSON.parse(fs.readFileSync(this.path, "utf-8")) 
         
         const product = this.products.find(p =>  p.id.toString() === pId.toString())

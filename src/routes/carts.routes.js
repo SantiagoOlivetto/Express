@@ -1,6 +1,5 @@
 import  express  from "express";
-import CartManager from "../public/js/CartManager.js";
-import { getProductById } from "../public/js/CartManager.js";
+import CartManager from "../controllers/CartManager.js";
 
 export const routerCarts = express.Router()
 routerCarts.use(express.json())

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { __dirname, apiProductsPath, apiCartsPath } from '../../utils.js'
+import { __dirname, apiProductsPath, apiCartsPath, __filename } from '../utils/utils.js'
 
 export const getProductById = (id) => {
     const product = JSON.parse(fs.readFileSync(apiProductsPath, "utf-8"))
@@ -12,7 +12,7 @@ export default class CartManager {
     constructor (path) {
         this.carts = [],
         this.path = path
-        fs.existsSync(this.path) == false ? fs.writeFileSync(this.path, JSON.stringify(this.carts)) : console.log(`${this.path} is currently running`) 
+        fs.existsSync(this.path) == false ? fs.writeFileSync(this.path, JSON.stringify(this.carts)) : console.log('carts.json') 
     }
     #idGenerator() {
         let idGenerated = 0
@@ -71,6 +71,5 @@ export default class CartManager {
 
 const cartManager = new CartManager (apiCartsPath)
 
-//cartManager.addProductCart(2,3)
 
 

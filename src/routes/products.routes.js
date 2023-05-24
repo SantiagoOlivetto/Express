@@ -1,5 +1,5 @@
 import  express  from "express"
-import ProductManager from "../public/js/ProductManager.js";
+import ProductManager from "../controllers/ProductManager.js";
 
 import bodyParser from "express"
 
