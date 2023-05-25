@@ -79,12 +79,10 @@ export default class ProductManager {
         this.products = JSON.parse(fs.readFileSync(this.path, "utf-8")) 
         
         const product = this.products.find(p =>  p.id.toString() === pId.toString())
-        console.log(product);
         if (product) {
             this.products.splice(this.products.indexOf(product), 1)
             fs.writeFileSync(this.path, JSON.stringify(this.products))
-            console.log("Product successfully deleted")
-            return true;
+            return product;
         }else {
             console.log("second run");
             return false;

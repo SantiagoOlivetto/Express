@@ -29,12 +29,16 @@ socketServer.on('connection', socket => {
     // new product reciever
     socket.on('addProduct', async newProduct => {
         const {title, description, category, price, thumbnail, code, stock, status} = newProduct
-        await productManager.addProducts(title, description, category, price, thumbnail, code, stock, status)
+        const adddedProduct = await productManager.addProducts(title, description, category, price, thumbnail, code, stock, status)
+
+        socket.emit('productAdded', adddedProduct);
     })
 
     // Delete product reciever
     socket.on('deleteProduct', async productId => {
-        await productManager.deleteProduct(productId)
+        const deletedProduct = await productManager.deleteProduct(productId)
+
+        socket.emit('productDeleted', deletedProduct.title);
     })
 
     // Show handshake finalization

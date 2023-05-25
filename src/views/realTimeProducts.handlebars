@@ -2,14 +2,14 @@
     <h1 class="addTitleForm">Add new product to the list</h1>
 
     <form id="addProductForm">
-        <input type="text" id="productTitle" name="productName" placeholder="title" required>
-        <input type="text" id="productDescription" name="productDescription" placeholder="description" required>
-        <input type="text" id="productCategory" name="productCategory" placeholder="category" required>
-        <input type="number" id="productPrice" name="productPrice" placeholder="price" step="0.01" required>
-        <input type="text" id="productThumbnail" name="productThumbnail" placeholder="thumbnail" required>
-        <input type="text" id="productCode" name="productCode" placeholder="code" required>
-        <input type="number" id="productStock" name="productStock" placeholder="stock" required>
-        <select type="text" id="productStatus" name="productStatus" placeholder="status" required>
+        <input type="text" id="title" name="title" placeholder="title" required>
+        <input type="text" id="description" name="description" placeholder="description" required>
+        <input type="text" id="category" name="category" placeholder="category" required>
+        <input type="number" id="price" name="price" placeholder="price" step="0.01" required>
+        <input type="text" id="thumbnail" name="thumbnail" placeholder="thumbnail" required>
+        <input type="text" id="code" name="code" placeholder="code" required>
+        <input type="number" id="stock" name="stock" placeholder="stock" required>
+        <select type="text" id="status" name="status" placeholder="status" required>
             <option value="true">true</option>
             <option value="false">false</option>
         </select>
@@ -23,22 +23,21 @@
         <button type="submit">Delete</button>
     </form>
 </div>
-<div>
+<div id="listContainer">
     {{#if title}}
     <h1 class="listTitle">{{title}}</h1>
     {{else}}
     <h1>Unknown Title</h1>
     {{/if}}
+    <div id="cardList" class="cardList">
     {{#each products}}
-        <div class="productContainer">
-            <h3 class="productsHead">{{this.title}}</h3>
-            <ul style="list-style: none;">
-            <li>{{this.description}}</li>
-            <li class="productPrice">{{this.price}}$</li>
+        <div class="card" id="card">
+            <h3 class="productTitle">{{this.title}}</h3>
+            <p class="productDescription">{{this.description}}</p>
+            <p class="productPrice">{{this.price}}$</p>
         </div>
-
-        </ul>
-        {{/each}}
+    {{/each}}
+    </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
