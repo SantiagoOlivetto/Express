@@ -10,7 +10,6 @@ import { routerCarts } from "./routes/carts.routes.js";
 import { connectMongo } from "./utils/connections.js";
 import { routerChat } from "./routes/chat.routes.js";
 import { chatService } from "./services/chat.service.js";
-import { cartsService } from "./services/carts.service.js";
 
 const app = express();
 const port = 8080;

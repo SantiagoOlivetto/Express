@@ -1,9 +1,12 @@
 import {connect} from "mongoose";
+import fs from 'fs'
 
+const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+const mongoURI = config.mongoURI
 export async function connectMongo() {
     try {
         await connect(
-            "mongodb+srv://santiolivetto:fuvpA6zHzTC4lX5V@cluster0.f7jkd3j.mongodb.net/ecommerce?retryWrites=true&w=majority"
+            mongoURI
         );
         console.log("Plug to MongoDB");
     }catch (e) {
