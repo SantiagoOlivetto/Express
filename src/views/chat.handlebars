@@ -1,0 +1,16 @@
+<div id="chat-container"></div>
+  <form id="userData">
+    <div>
+      <input type="text" id="userName" placeholder="Write your name..." required>
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+  <div>
+    <input type="text" id="message-input" placeholder="Write a message...">
+    <button id="sendMessage">Enviar</button>
+  </div>
+  <div id="chatLog">
+
+  </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>

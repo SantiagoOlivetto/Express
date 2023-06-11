@@ -1,7 +1,7 @@
 import  express  from "express"
 import ProductManager from "../controllers/ProductManager.js";
-
 import bodyParser from "express"
+import { productService } from "../services/products.service.js";
 
 export const routerProducts = express.Router()
 routerProducts.use(bodyParser.json());
@@ -10,39 +10,65 @@ routerProducts.use(express.json())
 export const productManager = new ProductManager("./src/api/products.json");
 
 routerProducts.get('/',async (req, res) => {
-    const productList = await productManager.getProducts()
-    const limit = req.query.limit
-    const limitedList = productList.slice(0, limit)
-
-
-    return res.status(200).json({status: "succesfull", msg: "Product list", data: limitedList})
+    try {
+        const products = await productService.findAll()
+        return res.status(200).json({status: "succesfull", msg: "Product list", data: products})
+    }catch (err){
+        return res.status(500).json({status: "Error", msg: "Something went wrong", data: {err}})
+    }
 })
 
 routerProducts.get('/:id', async (req, res) => {
-    const productId = req.params.id
-    const productByID = await productManager.getProductById(productId)
-    return productByID ? res.status(200).json({status: "succesfull", msg: "Product by id", data: productByID}) : res.status(404).json({status: "ERROR 404", msg: "Problem: Searching for product by id", data: `The id ${productId} do not match any product`})
+    const id = req.params.id
+    try {
+        const productById = await productService.findById(id)
+        productById ? res.status(200).json({status: "succesfull", msg: "Product by id", data: productById}) :res.status(404).json( {status: "Unsuccesfull" , msg:`Product with the id:${id} does not exist`, data: {}})
+                
+    }catch (err){
+        console.log(err);
+        return res.status(500).json({status: "Error", msg: err})
+        
+    }   
 })
 
 routerProducts.post('/', async (req, res) => {
-    const {title, description, category, price, thumbnail, code, stock, status} = req.body
-    const newProduct = await productManager.addProducts(title, description, category, price, thumbnail, code, stock, status)
-    res.status(201).json({status: "succesfull", msg: "Product added to the list", data: newProduct})
+    try {
+        const {title, description, category, price, thumbnail, code, stock, status} = req.body
+        const newProduct = await productService.createProduct(title, description, category, price, thumbnail, code, stock, status);
+        if (newProduct) {
+            return res.status(201).json({status: "succesfull", msg: "Product added to the list", data: newProduct})      
+        }
+    }catch (err) {
+        console.log(err);
+        return res.status(500).json({status: "Unsuccesfull", msg: "Creation process failed", data: err })
+    }
+    
 })
 
 routerProducts.delete('/:id', async (req, res) => {
-    const productId = req.params.id
-    const deleteProduct = productManager.deleteProduct(productId)
-    const productList = await productManager.getProducts()
-    console.log(productList);
-    return deleteProduct == true ? res.status(200).json({status: "succesfull", msg: "Product deleted", data: productList}) : res.status(404).json({status: "ERROR 404", msg: "Problem: Searching for product by id", data: `The id ${productId} do not match any product`})
+    const pid = req.params.id
+
+    try{
+        const productDelete = await productService.deleteProduct(pid)
+        if (productDelete) {
+            console.log(productDelete);
+            return res.status(204).header(`X-Product-Message`, 'Product deleted successfully').end()
+        }else {
+            throw new Error(`Product with the id:${pid} does not exist`)
+        }
+    }catch (err) {
+        console.log(err);
+        return res.status(404).json({status: "error", msg: `Product with the id:${pid} do not match a product`, data: "Error 404"})
+    }
 })
 
 routerProducts.put('/:id', async (req, res) => {
     const productId = req.params.id
     const toUpdate = req.body
-    const key = Object.keys(toUpdate)
-    const newValue = Object.values(toUpdate)
-    const updateProduct = await productManager.updateProduct(productId, key[0],newValue[0]);
-    return updateProduct ? res.status(200).json({status: "succesfull", msg: "product updated", data: toUpdate}) : res.status(500).json({status: "ERROR 500", msg: "Updating process of product was unsuccesfull"})
+    try{
+        const updateProduct = await productService.updateProduct(productId, toUpdate);
+        updateProduct ? res.status(200).json({status: "succesfull", msg: "product updated", data: toUpdate}) : res.status(500).json({status: "ERROR 500", msg: "Updating process of product was unsuccesfull"})
+    }catch (err){
+        return res.status(500).json({status: "Error", msg: err})
+    }
 })
