@@ -1,15 +1,21 @@
 <div>
-    {{#if title}}
-    <h1 class="listTitle">{{title}}</h1>
-    {{else}}
+  {{#if title}}
+    <h1 class='listTitle'>{{title}}</h1>
+  {{else}}
     <h1>Unknown Title</h1>
-    {{/if}}
+  {{/if}}
+  <div class='cardList'>
     {{#each products}}
-        <div class="productContainer">
-            <h3 class="productsHead">{{this.title}}</h3>
-            <ul style="list-style: none;">
-            <li>{{this.description}}</li>
-            <li>{{this.price}}$</li>
-        </div>
-        {{/each}}
+      <div class='card'>
+        <h3 class='productTitle'>{{this.title}}</h3>
+        <ul style='list-style: none;'>
+          <li class='productDescription'>{{this.description}}</li>
+          <li class='productPrice'>{{this.price}}$</li>
+        </ul>
+      </div>
+    {{/each}}
+  </div>
+</div>
+<div id='paginate'>
+  <span>{{products}}</span>
 </div>

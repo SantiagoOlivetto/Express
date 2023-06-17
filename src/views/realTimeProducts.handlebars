@@ -1,44 +1,44 @@
 <div>
-    <h1 class="addTitleForm">Add new product to the list</h1>
+  <h1 class='addTitleForm'>Add new product to the list</h1>
 
-    <form id="addProductForm">
-        <input type="text" id="title" name="title" placeholder="title" required>
-        <input type="text" id="description" name="description" placeholder="description" required>
-        <input type="text" id="category" name="category" placeholder="category" required>
-        <input type="number" id="price" name="price" placeholder="price" step="0.01" required>
-        <input type="text" id="thumbnail" name="thumbnail" placeholder="thumbnail" required>
-        <input type="text" id="code" name="code" placeholder="code" required>
-        <input type="number" id="stock" name="stock" placeholder="stock" required>
-        <select type="text" id="status" name="status" placeholder="status" required>
-            <option value="true">true</option>
-            <option value="false">false</option>
-        </select>
+  <form id='addProductForm'>
+    <input type='text' id='title' name='title' placeholder='title' required />
+    <input type='text' id='description' name='description' placeholder='description' required />
+    <input type='text' id='category' name='category' placeholder='category' required />
+    <input type='number' id='price' name='price' placeholder='price' step='0.01' required />
+    <input type='text' id='thumbnail' name='thumbnail' placeholder='thumbnail' required />
+    <input type='text' id='code' name='code' placeholder='code' required />
+    <input type='number' id='stock' name='stock' placeholder='stock' required />
+    <select type='text' id='status' name='status' placeholder='status' required>
+      <option value='true'>true</option>
+      <option value='false'>false</option>
+    </select>
 
-        <button type="submit">Add</button>
-    </form>
+    <button type='submit'>Add</button>
+  </form>
 
-    <h1>Delete a product from the list</h1>
-    <form id="deleteProductForm">
-        <input type="number" id="productId" name="productId" placeholder="id" required>
-        <button type="submit">Delete</button>
-    </form>
+  <h1>Delete a product from the list</h1>
+  <form id='deleteProductForm'>
+    <input type='number' id='productId' name='productId' placeholder='id' required />
+    <button type='submit'>Delete</button>
+  </form>
 </div>
-<div id="listContainer">
-    {{#if title}}
-    <h1 class="listTitle">{{title}}</h1>
-    {{else}}
+<div id='listContainer'>
+  {{#if title}}
+    <h1 class='listTitle'>{{title}}</h1>
+  {{else}}
     <h1>Unknown Title</h1>
-    {{/if}}
-    <div id="cardList" class="cardList">
+  {{/if}}
+  <div id='cardList' class='cardList'>
     {{#each products}}
-        <div class="card" id="card">
-            <h3 class="productTitle">{{this.title}}</h3>
-            <p class="productDescription">{{this.description}}</p>
-            <p class="productPrice">{{this.price}}$</p>
-        </div>
+      <div class='card' id='card'>
+        <h3 class='productTitle'>{{this.title}}</h3>
+        <p class='productDescription'>{{this.description}}</p>
+        <p class='productPrice'>{{this.price}}$</p>
+      </div>
     {{/each}}
-    </div>
+  </div>
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+<script src='/socket.io/socket.io.js'></script>
+<script src='/js/index.js'></script>

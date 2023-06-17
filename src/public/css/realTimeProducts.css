@@ -1,66 +1,65 @@
 select {
-    appearance: none;
-    background-color: #f2f2f2;
-    border: none;
-    border-radius: 3px;
-    padding: 4px;
-    font-size: 15px;
-    color: #333;
-    width: 3rem;
-  }
-  
-  select:focus {
-    outline: none;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-  }
-  
-  select option {
-    background-color: #f2f2f2;
-    color: #333;
-    padding: 10px;
-  }
-  
-  select option:hover {
-    background-color: #ccc;
-  }
+  appearance: none;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 3px;
+  padding: 4px;
+  font-size: 15px;
+  color: #333;
+  width: 3rem;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+select option {
+  background-color: #f2f2f2;
+  color: #333;
+  padding: 10px;
+}
+
+select option:hover {
+  background-color: #ccc;
+}
 
 button {
-    font-weight: 700;
-    margin-left: 10px;
-    padding: 5px;
-    border: none;
-    border-width: 0;
-    border-style: none;
-    border-radius: 3px;
-    width: 5rem;
-    height: 1.5rem;
-    transition: 0.5s ease; 
-    background-color: #f2f2f2;
+  font-weight: 700;
+  margin-left: 10px;
+  padding: 5px;
+  border: none;
+  border-width: 0;
+  border-style: none;
+  border-radius: 3px;
+  width: 5rem;
+  height: 1.5rem;
+  transition: 0.5s ease;
+  background-color: #f2f2f2;
 }
 
 button:hover {
-    border-color: #0066ff;
-    box-shadow: 0 0 5px #0066ff;
-    
+  border-color: #0066ff;
+  box-shadow: 0 0 5px #0066ff;
 }
 input {
-    padding: 5px;
-    background-color: #f2f2f2;
-    margin: auto;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-    transition:  0.3s ease;
+  padding: 5px;
+  background-color: #f2f2f2;
+  margin: auto;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s ease;
 }
-  
+
 input:focus {
-    border-color: #0066ff;
-    box-shadow: 0 0 5px #0066ff;
+  border-color: #0066ff;
+  box-shadow: 0 0 5px #0066ff;
 }
 
 h1.listTitle {
-    text-align: center;
+  text-align: center;
 }
 
 .cardList {
@@ -68,13 +67,12 @@ h1.listTitle {
   flex-wrap: wrap-reverse;
   justify-content: space-around;
   flex-direction: row-reverse;
-
 }
 
 .card {
   background-color: #f2f2f2;
   margin-top: 3rem;
-  height: fit-content;
+  height: 125px;
   width: 500px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
