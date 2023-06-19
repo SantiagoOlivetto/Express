@@ -12,10 +12,30 @@
           <li class='productDescription'>{{this.description}}</li>
           <li class='productPrice'>{{this.price}}$</li>
         </ul>
+        <div class='addToCart'>
+          <button class='addToCart-btn' data-product-id='{{this._id}}'>Add to cart</button>
+        </div>
       </div>
     {{/each}}
   </div>
 </div>
-<div id='paginate'>
-  <span>{{products}}</span>
+<div id='pagination' class='pagination'>
+
+  {{#if prodColl.hasPrevPage}}
+    <a href={{prodColl.prevLink}}><ion-icon name='chevron-back-outline'></ion-icon></a>
+  {{/if}}
+  <select name='pageSelector' id='pageSelect' class='page-select'>
+    {{#each arrPages}}
+      <option value='{{this}}'>{{this}}</option>
+    {{/each}}
+  </select>
+  {{#if prodColl.hasNextPage}}
+    <a href={{prodColl.nextLink}}><ion-icon name='chevron-forward-outline'></ion-icon></a>
+  {{/if}}
 </div>
+<script>
+  let currentPage =
+  {{prodColl.page}}
+
+</script>
+<script src='/js/viewProducts.js'></script>

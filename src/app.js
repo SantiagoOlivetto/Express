@@ -4,11 +4,9 @@ import { Server } from 'socket.io';
 import { __dirname } from './utils/utils.js';
 import { routerProducts } from './routes/products.routes.js';
 import { productManager } from './controllers/ProductManager.js';
-import { routerViewProducts } from './routes/products.view.router.js';
-import { viewRouter } from './routes/views.router.js';
+import { viewRoutes } from './routes/views.routes.js';
 import { routerCarts } from './routes/carts.routes.js';
 import { connectMongo } from './utils/connections.js';
-import { routerChat } from './routes/chat.routes.js';
 import { chatService } from './services/chat.service.js';
 
 const app = express();
@@ -25,7 +23,6 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
-app.use('/', viewRouter);
 
 socketServer.on('connection', (socket) => {
   console.log(`New connection: ID ${socket.id}`);
@@ -76,10 +73,8 @@ app.get('/', (req, res) => {
 app.use('/api/products', routerProducts);
 // cart endpoint
 app.use('/api/carts', routerCarts);
-// products view
-app.use('/products', routerViewProducts);
-// Chat view
-app.use('/chat', routerChat);
+// View endpoint
+app.use('/', viewRoutes);
 
 app.get('*', (req, res) => {
   res.status(404).send("ERROR 404 : The website you were trying to reach couldn't be found on the server.");

@@ -25,7 +25,9 @@ class CartsService {
       product: pId,
       quantity: 1,
     };
-    cart.products.addToSet(product);
+    //console.log(cart);
+    const productExist = cart.products.find((product) => product.product == pId);
+    productExist ? productExist.quantity++ : cart.products.addToSet(product);
     await cart.save();
     return product;
   }

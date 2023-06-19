@@ -26,9 +26,8 @@ class ProductsService {
       let prevLink = '';
       let nextLink = '';
 
-      products.hasNextPage ? (nextLink = `http://localhost:8080/api/products/?page=${products.nextPage}`) : (nextLink = null);
-      products.hasPrevPage ? (prevLink = `http://localhost:8080/api/products/?page=${products.prevPage}`) : (prevLink = null);
-      const links = { prevLink, nextLink };
+      products.hasNextPage ? (nextLink = `http://localhost:8080/api/products?page=${products.nextPage}`) : (nextLink = null);
+      products.hasPrevPage ? (prevLink = `http://localhost:8080/api/products?page=${products.prevPage}`) : (prevLink = null);
       products.prevLink = prevLink;
       products.nextLink = nextLink;
       return products;

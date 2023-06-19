@@ -32,9 +32,9 @@ button {
   border-width: 0;
   border-style: none;
   border-radius: 3px;
-  width: 5rem;
-  height: 1.5rem;
-  transition: 0.5s ease;
+  width: fit-content;
+  height: fit-content;
+  transition: 0.3s ease;
   background-color: #f2f2f2;
 }
 
@@ -67,12 +67,13 @@ h1.listTitle {
   flex-wrap: wrap-reverse;
   justify-content: space-around;
   flex-direction: row-reverse;
+  margin-bottom: 2rem;
 }
 
 .card {
   background-color: #f2f2f2;
   margin-top: 3rem;
-  height: 125px;
+  height: fit-content;
   width: 500px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -99,4 +100,17 @@ h1.listTitle {
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
+}
+div.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+select {
+  text-align: center;
+  margin: 0 1rem;
+}
+a {
+  text-decoration: none;
+  color: inherit;
 }

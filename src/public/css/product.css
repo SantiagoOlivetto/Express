@@ -1,34 +1,34 @@
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .card {
-    margin-top: 3rem;
-    height: fit-content;
-    width: 500px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding: 20px 10px;
-    text-align: center;
-  }
-  .productTitle {
-    display: inline;
-    padding: 5px;
-    background-color: #0066ff8a;
-    border-radius: 3px;
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  .productDescription {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
-  }
-  .productPrice {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-  }
+  margin-top: 3rem;
+  height: fit-content;
+  width: 500px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px 10px;
+  text-align: center;
+}
+.productTitle {
+  display: inline;
+  padding: 5px;
+  background-color: #0066ff8a;
+  border-radius: 3px;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.productDescription {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+.productPrice {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
