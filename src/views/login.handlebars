@@ -1,0 +1,12 @@
+<div class='login-container'>
+  <h1>Log in</h1>
+  <form action='/login' method='POST'>
+    <input id='email' name='email' type='email' class='custom-input' placeholder='E-mail' required='true' />
+    <input id='password' name='password' type='password' class='custom-input' placeholder='Password' required='true' />
+    {{#if msg}}
+      <p>Email or password incorrect</p>
+    {{/if}}
+    <input class='button' type='submit' value='Log in!' />
+    <a href='http://localhost:8080/signup'>Don't have an account yet?</a>
+  </form>
+</div>

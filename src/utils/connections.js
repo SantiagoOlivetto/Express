@@ -2,7 +2,7 @@ import { connect } from 'mongoose';
 import fs from 'fs';
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-const mongoURI = config.mongoURI;
+export const mongoURI = config.mongoURI;
 export async function connectMongo() {
   try {
     await connect(mongoURI);

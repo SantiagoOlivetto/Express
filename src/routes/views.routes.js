@@ -2,6 +2,8 @@ import express from 'express';
 import { productManager } from './products.routes.js';
 import { productService } from '../services/products.service.js';
 import { cartsService } from '../services/carts.service.js';
+import { usersService } from '../services/users.service.js';
+import { authUser } from '../middlewares/auth.js';
 
 export const viewRoutes = express.Router();
 
@@ -28,6 +30,8 @@ viewRoutes.get('/products/:pid', async (req, res) => {
 });
 
 viewRoutes.get('/products', async (req, res) => {
+  const name = req.session.firstName;
+  const role = req.session.role;
   let { limit, page, sort, query } = req.query;
   const prodColl = await productService.findAll(limit, page, query, sort);
   const products = prodColl.docs.map((doc) => doc.toJSON());
@@ -44,6 +48,8 @@ viewRoutes.get('/products', async (req, res) => {
     products,
     prodColl,
     arrPages,
+    name,
+    role,
   });
 });
 
@@ -66,4 +72,79 @@ viewRoutes.get('/chat', (req, res) => {
   return res.render('chat', {
     style: 'chat.css',
   });
+});
+
+// USERS---------------------------------------
+viewRoutes.get('/signup', (req, res) => {
+  return res.render('signup', {});
+});
+viewRoutes.post('/signup', (req, res) => {
+  const { firstName, lastName, email, dob, password } = req.body;
+
+  const newUser = usersService.createUser(firstName, lastName, email, dob, password);
+  return res.render('signup', {});
+});
+
+// LOG IN---------------------------------------
+
+viewRoutes.get('/login', (req, res) => {
+  return res.render('login', {
+    style: 'login.css',
+  });
+});
+viewRoutes.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+    req.session.firstName = 'coder';
+    req.session.email = email;
+    req.session.role = 'admin';
+    return res.redirect('/dashboard');
+  }
+  const userFound = await usersService.findUser(email, password);
+  if (userFound) {
+    req.session.firstName = userFound.firstName;
+    req.session.email = userFound.email;
+    req.session.role = userFound.role;
+    return res.redirect('/dashboard');
+  } else {
+    const msg = true;
+    return res.render('login', {
+      style: 'login.css',
+      msg,
+    });
+  }
+});
+
+// DASHBOARD---------------------------------------
+viewRoutes.get('/dashboard', authUser, (req, res) => {
+  const userName = req.session.firstName;
+  const role = req.session.role;
+
+  return res.render('dashboard', {
+    style: 'login.css',
+    userName,
+    role,
+  });
+});
+
+// LOGOUT---------------------------------------
+viewRoutes.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log('Error al destruir la sesión:', err);
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
+// SESSION---------------------------------------
+viewRoutes.get('/session', (req, res) => {
+  if (req.session.counter) {
+    req.session.counter++;
+    res.send(`Se ha visitado el sitio ${req.session.counter} veces.`);
+  } else {
+    req.session.counter = 1;
+    res.send('Welcome!!!');
+  }
 });

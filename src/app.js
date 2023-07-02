@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import { __dirname } from './utils/utils.js';
@@ -6,13 +7,14 @@ import { routerProducts } from './routes/products.routes.js';
 import { productManager } from './controllers/ProductManager.js';
 import { viewRoutes } from './routes/views.routes.js';
 import { routerCarts } from './routes/carts.routes.js';
-import { connectMongo } from './utils/connections.js';
+import { connectMongo, mongoURI } from './utils/connections.js';
 import { chatService } from './services/chat.service.js';
+import MongoStore from 'connect-mongo';
 
 const app = express();
 const port = 8080;
 connectMongo();
-const httpServer = app.listen(port, () => console.log(`Listening on port ${port}`));
+const httpServer = app.listen(port, () => console.log(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
 
 app.use(express.json());
@@ -23,6 +25,15 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
+
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: mongoURI }),
+    secret: 'e-commercePass',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 socketServer.on('connection', (socket) => {
   console.log(`New connection: ID ${socket.id}`);
