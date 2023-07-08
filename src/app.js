@@ -10,6 +10,8 @@ import { routerCarts } from './routes/carts.routes.js';
 import { connectMongo, mongoURI } from './utils/connections.js';
 import { chatService } from './services/chat.service.js';
 import MongoStore from 'connect-mongo';
+import { iniPassport } from './config/passport.config.js';
+import passport from 'passport';
 
 const app = express();
 const port = 8080;
@@ -20,12 +22,12 @@ const socketServer = new Server(httpServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// HANDLEBARS ENGINE SETTINGS
+// HANDLEBARS ENGINE SET
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
-
+// SESSION SET
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: mongoURI }),
@@ -34,6 +36,11 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+//PASSPORT INIT
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 socketServer.on('connection', (socket) => {
   console.log(`New connection: ID ${socket.id}`);

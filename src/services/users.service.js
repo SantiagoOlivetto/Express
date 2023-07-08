@@ -1,4 +1,5 @@
 import { UsersModel } from '../dao/models/users.model.js';
+import { isValidPassword } from '../utils/utils.js';
 
 class UsersService {
   validateUser(firstName, lastName, email, dob, password) {
@@ -13,7 +14,8 @@ class UsersService {
   async createUser(firstName, lastName, email, dob, password) {
     let newUser;
     this.validateUser(firstName, lastName, email, dob, password);
-    if (this.emailCheck(email) === false) {
+
+    if ((await this.emailCheck(email)) === false) {
       return (newUser = await UsersModel.create({ firstName, lastName, email, dob, password }));
     } else {
       const msg = 'That email is already linked with an account';
@@ -23,7 +25,7 @@ class UsersService {
   }
   async findUser(email, password) {
     let account = await this.emailCheck(email);
-    return account && account.password === password ? account : false;
+    return account && isValidPassword(account, password) ? account : false;
   }
 }
 

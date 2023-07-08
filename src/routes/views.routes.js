@@ -4,6 +4,8 @@ import { productService } from '../services/products.service.js';
 import { cartsService } from '../services/carts.service.js';
 import { usersService } from '../services/users.service.js';
 import { authUser } from '../middlewares/auth.js';
+import { createHash } from '../utils/utils.js';
+import passport from 'passport';
 
 export const viewRoutes = express.Router();
 
@@ -74,51 +76,58 @@ viewRoutes.get('/chat', (req, res) => {
   });
 });
 
-// USERS---------------------------------------
+// SIGN UP---------------------------------------
 viewRoutes.get('/signup', (req, res) => {
   return res.render('signup', {});
 });
-viewRoutes.post('/signup', (req, res) => {
-  const { firstName, lastName, email, dob, password } = req.body;
+viewRoutes.post('/signup', passport.authenticate('singup', { failureRedirect: '/signup' }), async (req, res) => {
+  if (!req.user) {
+    let msg = 'Something went wrong';
+    console.log(msg);
+    return msg;
+  }
+  req.session.user = {
+    _id: req.user._id,
+    firstName: req.user.firstName,
+    lasName: req.user.lastName,
+    email: req.user.email,
+    dob: req.user.dob,
+    role: req.user.role,
+  };
+  res.redirect('/dashboard');
+  /* const { firstName, lastName, email, dob, password } = req.body;
+  const hashedPass = createHash(password);
+  const newUser = usersService.createUser(firstName, lastName, email, dob, hashedPass); */
 
-  const newUser = usersService.createUser(firstName, lastName, email, dob, password);
-  return res.render('signup', {});
+  //return res.render('signup', {});
 });
 
 // LOG IN---------------------------------------
 
 viewRoutes.get('/login', (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/dashboard');
+  }
   return res.render('login', {
     style: 'login.css',
   });
 });
-viewRoutes.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-    req.session.firstName = 'coder';
-    req.session.email = email;
-    req.session.role = 'admin';
-    return res.redirect('/dashboard');
-  }
-  const userFound = await usersService.findUser(email, password);
-  if (userFound) {
-    req.session.firstName = userFound.firstName;
-    req.session.email = userFound.email;
-    req.session.role = userFound.role;
-    return res.redirect('/dashboard');
-  } else {
+viewRoutes.post('/login', passport.authenticate('login', { failureRedirect: '/login' }), async (req, res) => {
+  if (!req.user) {
     const msg = true;
     return res.render('login', {
       style: 'login.css',
       msg,
     });
   }
+  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, role: req.user.role };
+  return res.redirect('/dashboard');
 });
 
 // DASHBOARD---------------------------------------
 viewRoutes.get('/dashboard', authUser, (req, res) => {
-  const userName = req.session.firstName;
-  const role = req.session.role;
+  const userName = req.session.user.firstName;
+  const role = req.session.user.role;
 
   return res.render('dashboard', {
     style: 'login.css',
@@ -147,4 +156,10 @@ viewRoutes.get('/session', (req, res) => {
     req.session.counter = 1;
     res.send('Welcome!!!');
   }
+});
+viewRoutes.get('/session/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+viewRoutes.get('/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+  req.session.user = req.user;
+  res.redirect('http://localhost:8080/dashboard');
 });
