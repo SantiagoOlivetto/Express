@@ -4,7 +4,6 @@ import { productService } from '../services/products.service.js';
 import { cartsService } from '../services/carts.service.js';
 import { usersService } from '../services/users.service.js';
 import { authUser } from '../middlewares/auth.js';
-import { createHash } from '../utils/utils.js';
 import passport from 'passport';
 
 export const viewRoutes = express.Router();
@@ -112,7 +111,12 @@ viewRoutes.get('/login', (req, res) => {
     style: 'login.css',
   });
 });
-viewRoutes.post('/login', passport.authenticate('login', { failureRedirect: '/login' }), async (req, res) => {
+viewRoutes.post('/login', passport.authenticate('login', { failureRedirect: '/!login' }), async (req, res) => {
+  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, role: req.user.role };
+  return res.redirect('/dashboard');
+});
+
+viewRoutes.get('/!login', (req, res) => {
   if (!req.user) {
     const msg = true;
     return res.render('login', {
@@ -120,8 +124,6 @@ viewRoutes.post('/login', passport.authenticate('login', { failureRedirect: '/lo
       msg,
     });
   }
-  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, role: req.user.role };
-  return res.redirect('/dashboard');
 });
 
 // DASHBOARD---------------------------------------
@@ -159,7 +161,11 @@ viewRoutes.get('/session', (req, res) => {
 });
 viewRoutes.get('/session/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-viewRoutes.get('/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+viewRoutes.get('/session/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
   req.session.user = req.user;
   res.redirect('http://localhost:8080/dashboard');
+});
+
+viewRoutes.get('/session/current', (req, res) => {
+  return res.status(200).json({ status: 'OK', msg: 'Session data', payload: req.session.user || {} });
 });

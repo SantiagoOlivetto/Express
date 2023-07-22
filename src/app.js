@@ -7,14 +7,15 @@ import { routerProducts } from './routes/products.routes.js';
 import { productManager } from './controllers/ProductManager.js';
 import { viewRoutes } from './routes/views.routes.js';
 import { routerCarts } from './routes/carts.routes.js';
-import { connectMongo, mongoURI } from './utils/connections.js';
+import { connectMongo } from './utils/connections.js';
 import { chatService } from './services/chat.service.js';
 import MongoStore from 'connect-mongo';
 import { iniPassport } from './config/passport.config.js';
 import passport from 'passport';
+import { env } from './config.js';
 
 const app = express();
-const port = 8080;
+const port = env.PORT;
 connectMongo();
 const httpServer = app.listen(port, () => console.log(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
@@ -30,7 +31,7 @@ app.use(express.static(__dirname + '/public'));
 // SESSION SET
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: mongoURI }),
+    store: MongoStore.create({ mongoUrl: env.MONGO_URL }),
     secret: 'e-commercePass',
     resave: true,
     saveUninitialized: true,
@@ -80,12 +81,7 @@ socketServer.on('connection', (socket) => {
 
 // index endpoint
 app.get('/', (req, res) => {
-  let option = {
-    welcome: 'Greetings internet surfer, here are some options for you',
-    option1: '/view/products/(insert a id nomber here or not)',
-    style: 'main.css',
-  };
-  res.render('index', option);
+  res.redirect('/login');
 });
 // products endpoint
 app.use('/api/products', routerProducts);

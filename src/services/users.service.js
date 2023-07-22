@@ -1,5 +1,5 @@
 import { UsersModel } from '../dao/models/users.model.js';
-import { isValidPassword } from '../utils/utils.js';
+import { isValidPassword } from '../utils/bcrypt.js';
 
 class UsersService {
   validateUser(firstName, lastName, email, dob, password) {

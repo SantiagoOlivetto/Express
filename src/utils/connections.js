@@ -1,11 +1,9 @@
 import { connect } from 'mongoose';
-import fs from 'fs';
+import { env } from '../config.js';
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-export const mongoURI = config.mongoURI;
 export async function connectMongo() {
   try {
-    await connect(mongoURI);
+    await connect(env.MONGO_URL);
     console.log('Plug to MongoDB');
   } catch (e) {
     console.log(e);

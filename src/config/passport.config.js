@@ -1,13 +1,12 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import { createHash, isValidPassword } from '../utils/utils.js';
+import { createHash, isValidPassword } from '../utils/bcrypt.js';
 import { UsersModel } from '../dao/models/users.model.js';
-import fs from 'fs';
+import { env } from '../config.js';
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-const clientId = config.clientID;
-const gitKey = config.gitKey;
+const clientId = env.CLIENT_ID;
+const gitKey = env.GIT_KEY;
 
 const LocalStrategy = local.Strategy;
 

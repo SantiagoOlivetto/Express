@@ -1,4 +1,4 @@
-import mongoose, { model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 const usersSchema = mongoose.Schema({
   firstName: { type: String, require: true },
@@ -6,6 +6,7 @@ const usersSchema = mongoose.Schema({
   email: { type: String, require: true, unique: true },
   dob: { type: String, require: true },
   password: { type: String, require: true },
+  cart: { type: Schema.Types.ObjectId, ref: 'carts', required: false },
   role: { type: String, default: 'client' },
 });
 
