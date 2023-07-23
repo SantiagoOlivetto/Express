@@ -6,12 +6,21 @@ class ProductsService {
     return deletedProduct;
   }
   async findAll(limit, page, query, sort) {
-    const options = {
-      limit: limit || 3,
-      page: page || 1,
-      query: query || {},
-      sort: sort || {},
-    };
+    let options = {};
+    if (limit === 'false') {
+      options = {
+        page: page || 1,
+        query: query || {},
+        sort: sort || {},
+      };
+    } else {
+      options = {
+        limit: limit || 3,
+        page: page || 1,
+        query: query || {},
+        sort: sort || {},
+      };
+    }
     let filterList = {};
     if (query === 'true' || query === 'false') {
       filterList = { status: query };
@@ -21,6 +30,7 @@ class ProductsService {
       }
     }
     const products = await ProductsModel.paginate(filterList, options);
+    console.log(products);
 
     const linksMaker = () => {
       let prevLink = '';
@@ -32,9 +42,35 @@ class ProductsService {
       products.nextLink = nextLink;
       return products;
     };
+
     linksMaker();
 
-    return products;
+    const productsColl = products.docs.map((doc) => doc.toJSON());
+    products.prevLink != null ? (products.prevLink = products.prevLink.replace('/api', '')) : products.prevLink;
+    products.nextLink != null ? (products.nextLink = products.nextLink.replace('/api', '')) : products.nextLink;
+    products.arrPages = [];
+    for (let i = 1; i <= products.totalPages; i++) {
+      products.arrPages.push(i);
+    }
+    const prodPag = {
+      totalDocs: products.totalDocs,
+      limit: products.limit,
+      totalPages: products.totalPages,
+      page: products.page,
+      pagingCounter: products.pagingCounter,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      prevLink: products.prevLink,
+      prevLink: products.prevLink,
+      nextLink: products.nextLink,
+      arrPages: products.arrPages,
+    };
+
+    const prodPayload = { productsColl, prodPag };
+
+    return prodPayload;
   }
   async findById(id) {
     const productById = await ProductsModel.findById(id);

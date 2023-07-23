@@ -12,7 +12,7 @@
     <h1>Unknown Title</h1>
   {{/if}}
   <div class='cardList'>
-    {{#each products}}
+    {{#each products.productsColl}}
       <div class='card'>
         <h3 class='productTitle'>{{this.title}}</h3>
         <ul style='list-style: none;'>
@@ -28,21 +28,21 @@
 </div>
 <div id='pagination' class='pagination'>
 
-  {{#if prodColl.hasPrevPage}}
-    <a href={{prodColl.prevLink}}><ion-icon name='chevron-back-outline'></ion-icon></a>
+  {{#if products.prodPag.hasPrevPage}}
+    <a href={{products.prodPag.prevLink}}><ion-icon name='chevron-back-outline'></ion-icon></a>
   {{/if}}
   <select name='pageSelector' id='pageSelect' class='page-select'>
-    {{#each arrPages}}
+    {{#each products.prodPag.arrPages}}
       <option value='{{this}}'>{{this}}</option>
     {{/each}}
   </select>
-  {{#if prodColl.hasNextPage}}
-    <a href={{prodColl.nextLink}}><ion-icon name='chevron-forward-outline'></ion-icon></a>
+  {{#if products.prodPag.hasNextPage}}
+    <a href={{products.prodPag.nextLink}}><ion-icon name='chevron-forward-outline'></ion-icon></a>
   {{/if}}
 </div>
 <script>
   let currentPage =
-  {{prodColl.page}}
+  {{products.prodPag.page}}
 
 </script>
 <script src='/js/viewProducts.js'></script>
