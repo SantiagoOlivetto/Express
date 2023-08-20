@@ -1,5 +1,33 @@
 <div class='card'>
   <h1 class='productTitle'>{{title}}</h1>
   <p class='productDescription'>{{description}}</p>
+  <p class='productCategoy'>Category: {{category}}</p>
   <p class='productPrice'>{{price}}$</p>
+  <p class='productStock'>Stock: {{stock}}</p>
+  <p class='productCode'>Code: {{code}}</p>
+
+  {{#unless user.permission}}
+    <div class='addToCart'>
+      <button class='addToCart-btn' data-product-id='{{pid}}'>Add to cart</button>
+    </div>
+    <script src='/js/addProductCart.js'></script>
+  {{/unless}}
+  {{#if user.permission}}
+    <form id='updateProductForm'>
+      <input type='text' id='title' name='title' placeholder='title' value='{{title}}' />
+      <input type='text' id='description' name='description' placeholder='description' value='{{description}}' />
+      <input type='text' id='category' name='category' placeholder='category' value='{{category}}' />
+      <input type='number' id='price' name='price' placeholder='price' value='{{price}}' step='0.01' />
+      <input type='text' id='thumbnail' name='thumbnail' placeholder='thumbnail' value='{{thumbnail}}' />
+      <input type='text' id='code' name='code' placeholder='code' value='{{code}}' />
+      <input type='number' id='stock' name='stock' placeholder='stock' value='{{stock}}' />
+      <select type='text' id='status' name='status' placeholder='status'>
+        <option value='true'>true</option>
+        <option value='false'>false</option>
+      </select>
+      <button id='update-btn' data-product-id='{{pid}}'>Update</button>
+    </form>
+    <script src='/js/updateProduct.js'></script>
+  {{/if}}
+  <a href='http://localhost:8080/products'>Go back to market</a>
 </div>

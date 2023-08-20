@@ -1,4 +1,4 @@
-import { ProductsModel } from '../dao/models/products.model.js';
+import { ProductsModel } from '../dao/db/models/products.model.js';
 
 class ProductsService {
   async deleteProduct(id) {
@@ -30,7 +30,6 @@ class ProductsService {
       }
     }
     const products = await ProductsModel.paginate(filterList, options);
-    console.log(products);
 
     const linksMaker = () => {
       let prevLink = '';
@@ -83,6 +82,15 @@ class ProductsService {
   }
   async updateProduct(id, toUpdate) {
     const productUpdate = await ProductsModel.findByIdAndUpdate(id, toUpdate);
+    return productUpdate;
+  }
+  async deductStck(id, qty) {
+    const productTodeduct = await this.findById(id);
+    let left;
+    if (productTodeduct.stock >= qty) {
+      left = productTodeduct.stock - qty;
+    }
+    const productUpdate = await this.updateProduct(id, { stock: left });
     return productUpdate;
   }
 }

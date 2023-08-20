@@ -3,13 +3,20 @@
     <h2>My shopping cart</h2>
   </div>
   <div class='cartItem'>
-    {{#each cartProds}}
-      <h3 class='productTitle'>{{this.product.title}}</h3>
+    {{#each cart}}
+      <h3 class='productTitle'>{{product.title}}</h3>
       <ul class='infoList'>
-        <li class='productCode'>code: <span>{{this.product.code}}</span></li>
-        <li class='orderQty'>Quantity: <span>{{this.quantity}}</span></li>
-        <li class='productPrice'>price: <span>{{this.product.price}}$</span></li>
+        <li class='productCode'>code: <span>{{product.code}}</span></li>
+        <li class='orderQty'>Quantity: <span>{{quantity}}</span></li>
+        <li class='productPrice'>price: <span>{{product.price}}$</span></li>
       </ul>
     {{/each}}
+    <h3 class='totalAmount'>Total amount: {{cart.amount}}$</h3>
+    {{#unless isEmpty}}
+      <button id='proceed_btn' data-cid='{{cId}}'>Proceed to purchase</button>
+    {{/unless}}
+    <a href='http://localhost:8080/products'>Go back to market</a>
   </div>
+
 </div>
+<script src='/js/cart.js'></script>

@@ -1,5 +1,5 @@
 import express from 'express';
-import ProductManager from '../controllers/ProductManager.js';
+import ProductManager from '../dao/fs/ProductManager.js';
 import bodyParser from 'express';
 import { productService } from '../services/products.service.js';
 

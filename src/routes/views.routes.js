@@ -1,44 +1,55 @@
 import express from 'express';
-import { authUser } from '../middlewares/auth.js';
+import { authAdmin, authClient, authUser } from '../middlewares/auth.js';
 import passport from 'passport';
 import { productsController } from '../controllers/products.controller.js';
 import { cartsController } from '../controllers/carts.controller.js';
 import { chatController } from '../controllers/chat.controller.js';
-import { signUpController } from '../controllers/signup.controller.js';
-import { logInController } from '../controllers/login.controller.js';
+import { signUpController } from '../controllers/users.controller.js';
+import { logInController } from '../controllers/users.controller.js';
 import { dashboardController } from '../controllers/dashboard.controller.js';
-import { logOutController } from '../controllers/logout.controller.js';
+import { logOutController } from '../controllers/users.controller.js';
 import { sessionsController } from '../controllers/sessions.controllers.js';
 import { realTimeProdController } from '../controllers/realtimeproducts.controller.js';
+import { orderController } from '../controllers/orders.controller.js';
 
 export const viewRoutes = express.Router();
 
 // REALTIME PRODUCTS----------------------------
 
-viewRoutes.get('/realtimeproducts', realTimeProdController.get);
+viewRoutes.get('/realtimeproducts', authAdmin, realTimeProdController.get);
 
 // PRODUCTS-------------------------------------
 
-viewRoutes.get('/products/:pid', productsController.getOne);
+viewRoutes.get('/products/:pid', authUser, productsController.getOne);
+viewRoutes.put('/products/:pid', authAdmin, productsController.update);
 
-viewRoutes.get('/products', productsController.getAll);
+viewRoutes.get('/products', authUser, authClient, productsController.getAll);
 
 // CART---------------------------------------
 
-viewRoutes.get('/carts/:cid', cartsController.get);
+viewRoutes.get('/carts/:cid', authUser, authClient, cartsController.get);
+viewRoutes.post('/carts/:pid', authUser, cartsController.post);
+
+// CART TO ORDER------------------------------
+viewRoutes.post('/carts/:cid/purchase', authUser, authClient, orderController.post);
+
+// ORDER-------------------------------------
+viewRoutes.get('/orders/:oid', authUser, authClient, orderController.get);
+viewRoutes.post('/orders/:oid/confirmation', authUser, authClient, orderController.confirmPost);
+viewRoutes.get('/orders/:oid/confirmation', authUser, authClient, orderController.confirmGet);
 
 // CHAT---------------------------------------
-viewRoutes.get('/chat', chatController.get);
+viewRoutes.get('/chat', authClient, chatController.get);
 
 // SIGN UP---------------------------------------
 viewRoutes.get('/signup', signUpController.get);
-viewRoutes.post('/signup', passport.authenticate('singup', { failureRedirect: '/signup' }), signUpController.postSesh);
+viewRoutes.post('/signup', signUpController.postSesh);
 
 // LOG IN---------------------------------------
 
 viewRoutes.get('/login', logInController.get);
 viewRoutes.get('/!login', logInController.noGet);
-viewRoutes.post('/login', passport.authenticate('login', { failureRedirect: '/!login' }), logInController.post);
+viewRoutes.post('/login', logInController.post);
 
 // DASHBOARD---------------------------------------
 viewRoutes.get('/dashboard', authUser, dashboardController.get);
@@ -50,6 +61,6 @@ viewRoutes.get('/logout', logOutController.get);
 viewRoutes.get('/session', sessionsController.getCount);
 viewRoutes.get('/session/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-viewRoutes.get('/session/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), sessionsController.getGHCallback);
+viewRoutes.get('/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), sessionsController.getGHCallback);
 
 viewRoutes.get('/session/current', sessionsController.getCurrent);

@@ -1,12 +1,14 @@
+import SessionDto from './dto/sessionDto.js';
+
 class DashboardController {
   async get(req, res) {
-    const userName = req.session.user.firstName;
-    const role = req.session.user.role;
+    const { cid, role, first_name } = new SessionDto(req.session.user);
 
     return res.render('dashboard', {
       style: 'login.css',
-      userName,
+      first_name,
       role,
+      cid,
     });
   }
 }

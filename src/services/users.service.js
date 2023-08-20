@@ -1,4 +1,4 @@
-import { UsersModel } from '../dao/models/users.model.js';
+import { UsersModel } from '../dao/db/models/users.model.js';
 import { isValidPassword } from '../utils/bcrypt.js';
 
 class UsersService {
@@ -11,7 +11,7 @@ class UsersService {
     const emailExist = await UsersModel.findOne({ email: email });
     return emailExist ? emailExist : false;
   }
-  async createUser(firstName, lastName, email, dob, password) {
+  async create(firstName, lastName, email, dob, password) {
     let newUser;
     this.validateUser(firstName, lastName, email, dob, password);
 
@@ -23,9 +23,21 @@ class UsersService {
       return msg;
     }
   }
-  async findUser(email, password) {
+  async find(email, password) {
     let account = await this.emailCheck(email);
     return account && isValidPassword(account, password) ? account : false;
+  }
+  async findById(id) {
+    let account = await UsersModel.findById(id);
+    return account;
+  }
+  async findByEmail(email) {
+    const account = await UsersModel.findOne({ email: email });
+    return account;
+  }
+  async linkCart(uid, cid) {
+    const linkCart = UsersModel.findByIdAndUpdate(uid, { cart: cid });
+    return linkCart;
   }
 }
 

@@ -1,4 +1,5 @@
 import { productService } from '../services/products.service.js';
+import SessionDto from './dto/sessionDto.js';
 class ProductsController {
   async getAll(req, res) {
     const name = req.session.firstName;
@@ -15,15 +16,32 @@ class ProductsController {
   }
 
   async getOne(req, res) {
+    let user = new SessionDto(req.session.user);
+    if (user.role === 'admin') {
+      user.permission = true;
+    }
+
     const pid = req.params.pid;
     const product = await productService.findById(pid);
-    const { title, price, description } = product;
+    const { title, price, description, stock, code, thumbnail, category } = product;
     return res.render('productId', {
       style: 'product.css',
       title,
       price,
       description,
+      category,
+      stock,
+      code,
+      thumbnail,
+      user,
+      pid,
     });
+  }
+  async update(req, res) {
+    const pid = req.params.pid;
+    const toUpdate = req.body;
+    const product = await productService.updateProduct(pid, toUpdate);
+    return res.status(200).json({ success: true });
   }
 }
 

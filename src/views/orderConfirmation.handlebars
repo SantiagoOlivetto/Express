@@ -1,0 +1,12 @@
+<div class='confirmation-container'>
+  <h1>Order Confirmed!</h1>
+  <p>Your order has been confirmed. Thank you for your purchase.</p>
+  <div class='order-details'>
+    <h2>Order Details</h2>
+    <p><strong>Order Number:</strong> {{order.code}}</p>
+    <p><strong>Purchase Date:</strong> {{order.createdAt}}</p>
+    <p><strong>Emitted by:</strong> {{order.emittedBy}}</p>
+    <p><strong>Total Amount:</strong> {{order.amount}} USD</p>
+  </div>
+  <a href='/dashboard' class='back-to-home'>Back to Home Page</a>
+</div>

@@ -1,9 +1,11 @@
-import { ClientSession } from 'mongodb';
-import { CartsModel } from '../dao/models/carts.model.js';
+import { CartsModel } from '../dao/db/models/carts.model.js';
+import { productService } from './products.service.js';
+import { usersService } from './users.service.js';
 
 class CartsService {
-  async createCart() {
-    const newCart = await CartsModel.create({ products: [] });
+  async createCart(uid) {
+    const newCart = await CartsModel.create({ user: uid, products: [] });
+    const userUpdate = await usersService.linkCart(uid, newCart._id);
     return newCart;
   }
   async findAll() {
@@ -12,28 +14,44 @@ class CartsService {
   }
   async findById(id) {
     try {
-      const cart = await CartsModel.findById(id).populate('products.product', 'title price code').exec();
+      let cart = await CartsModel.findById(id).populate('products.product', 'title price code').exec();
+      cart = cart.products.map((prod) => prod);
+      let amount = 0;
+      for (let i = 0; i < cart.length; i++) {
+        let price_qty = cart[i].product.price * cart[i].quantity;
+        amount = amount + price_qty;
+      }
+      cart.amount = amount.toFixed(2);
       return cart;
     } catch (err) {
       console.log(err);
       return err;
     }
   }
-  async addProdtoCart(cId, pId) {
-    const cart = await CartsModel.findById(cId);
-    const product = {
-      product: pId,
-      quantity: 1,
-    };
-    //console.log(cart);
+  async addProdtoCart(uId, pId) {
+    let cart = await CartsModel.findOne({ user: uId });
+    !cart ? (cart = await this.createCart(uId)) : cart;
+    let checkProduct = await productService.findById(pId);
+    const { stock } = checkProduct;
     const productExist = cart.products.find((product) => product.product == pId);
-    productExist ? productExist.quantity++ : cart.products.addToSet(product);
+
+    if (productExist && productExist.quantity === stock) {
+      throw new error('Cannot add more of this product to the cart due to insufficient stock');
+    } else if (productExist) {
+      productExist.quantity++;
+    }
+    if ((!productExist && stock > 0) || stock === 1) {
+      const product = {
+        product: pId,
+        quantity: 1,
+      };
+      cart.products.addToSet(product);
+    }
     await cart.save();
-    return product;
+    return cart;
   }
   async removeProd(cId, pId) {
     const cart = await CartsModel.findById(cId);
-    console.log(cart.products);
     const prodIndex = cart.products.findIndex((product) => product.product._id.toString() === pId);
     if (prodIndex != -1) {
       const res = cart.products.splice(prodIndex, 1);
@@ -43,6 +61,10 @@ class CartsService {
       const res = 'Product not found';
       return res;
     }
+  }
+  async isEmpty(cid) {
+    let cart = await CartsModel.findById(cid);
+    return cart.products.length === 0 ? true : false;
   }
   async emptyCart(cId) {
     let cart = await CartsModel.findById(cId);

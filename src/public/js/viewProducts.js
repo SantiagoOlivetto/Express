@@ -4,19 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addTocartBtn.forEach((button) => {
     button.addEventListener('click', async (evt) => {
       const productId = evt.target.dataset.productId;
-      fetch(`api/carts/64858900a8f825ac34addd54/product/${productId}`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Producto agregado al carrito:', data);
-        })
-        .catch((err) => {
-          console.error('Error adding product to cart:', err);
-        });
+      window.location.href = `/products/${productId}`;
     });
   });
 });

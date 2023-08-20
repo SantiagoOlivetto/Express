@@ -1,4 +1,4 @@
-import { chatModel } from '../dao/models/chat.model.js';
+import { chatModel } from '../dao/db/models/chat.model.js';
 
 class ChatService {
   async newMessagge(user, message) {

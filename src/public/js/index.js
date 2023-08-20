@@ -1,35 +1,33 @@
-
 const socket = io();
-const addProductForm = document.getElementById('addProductForm')
-const deleteProductForm = document.getElementById('deleteProductForm')
-
+const addProductForm = document.getElementById('addProductForm');
+const deleteProductForm = document.getElementById('deleteProductForm');
 
 addProductForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const title = document.getElementById('title').value
-    const description = document.getElementById('description').value
-    const category = document.getElementById('category').value
-    const price = document.getElementById('price').value
-    const thumbnail = document.getElementById('thumbnail').value
-    const code = document.getElementById('code').value
-    const stock = document.getElementById('stock').value
-    const status = document.getElementById('status').value
+  const title = document.getElementById('title').value;
+  const description = document.getElementById('description').value;
+  const category = document.getElementById('category').value;
+  const price = document.getElementById('price').value;
+  const thumbnail = document.getElementById('thumbnail').value;
+  const code = document.getElementById('code').value;
+  const stock = document.getElementById('stock').value;
+  const status = document.getElementById('status').value;
 
-    const newProduct = {title, description, category, price, thumbnail, code, stock, status}
+  const newProduct = { title, description, category, price, thumbnail, code, stock, status };
 
-    return socket.emit('addProduct', newProduct)
-})
+  return socket.emit('addProduct', newProduct);
+});
 
 socket.on('productAdded', async (addedProduct) => {
-    const renderProduct = await addedProduct
-    return location.reload()
-    
-    // This method is good to have instant rendering for no refreshing constantly (polyfill), 
-    // for example a real-time chat,
-    // but in these case i would stick with refreshing the page for adding a product to a list since is not as demanding as a  live-chat.
+  const renderProduct = await addedProduct;
+  return location.reload();
 
-    /* const listContainer = document.getElementById('cardList');
+  // This method is good to have instant rendering for no refreshing constantly (polyfill),
+  // for example a real-time chat,
+  // but in these case i would stick with refreshing the page for adding a product to a list since is not as demanding as a  live-chat.
+
+  /* const listContainer = document.getElementById('cardList');
     const addedProductCard = document.createElement('div');
     addedProductCard.classList.add('card')
     listContainer.appendChild(addedProductCard)
@@ -48,20 +46,17 @@ socket.on('productAdded', async (addedProduct) => {
     productPrice.classList.add('productPrice')
     productPrice.textContent = renderProduct.price + '$';
     addedProductCard.appendChild(productPrice) */
-
-})
+});
 
 deleteProductForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const productId = document.getElementById('productId').value
-    socket.emit('deleteProduct', productId)
-})
+  const productId = document.getElementById('productId').value;
+  socket.emit('deleteProduct', productId);
+});
 
-socket.on('productDeleted', (deletedProduct) => {  
-    location.reload()
+socket.on('productDeleted', (deletedProduct) => {
+  location.reload();
 
-    alert(`You deleted the item ${deletedProduct} succesfully!`);
-})
-
-
+  alert(`You deleted the item ${deletedProduct} succesfully!`);
+});

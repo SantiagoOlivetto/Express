@@ -4,10 +4,9 @@ import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import { __dirname } from './utils/utils.js';
 import { routerProducts } from './routes/products.routes.js';
-import { productManager } from './controllers/ProductManager.js';
+import { productManager } from './dao/fs/ProductManager.js';
 import { viewRoutes } from './routes/views.routes.js';
 import { routerCarts } from './routes/carts.routes.js';
-import { connectMongo } from './utils/connections.js';
 import { chatService } from './services/chat.service.js';
 import MongoStore from 'connect-mongo';
 import { iniPassport } from './config/passport.config.js';
@@ -16,7 +15,6 @@ import { env } from './config.js';
 
 const app = express();
 const port = env.PORT;
-connectMongo();
 const httpServer = app.listen(port, () => console.log(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
 
@@ -24,7 +22,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // HANDLEBARS ENGINE SET
-app.engine('handlebars', handlebars.engine());
+app.engine(
+  'handlebars',
+  handlebars.engine({
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
+  })
+);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
