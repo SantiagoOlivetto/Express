@@ -18,9 +18,12 @@ class CartsController {
     }
   }
   async post(req, res) {
-    const { uid } = new SessionDto(req.session.user);
+    const sessionDto = new SessionDto(req.session.user);
+    const { uid } = sessionDto;
     const pid = req.params.pid;
     const addProd = await cartsService.addProdtoCart(uid, pid);
+    sessionDto.cid = addProd._id;
+    req.session.user = sessionDto;
 
     return res.status(200).json({ success: true });
   }
