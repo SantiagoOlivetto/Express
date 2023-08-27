@@ -19,7 +19,6 @@ class UsersService {
       return (newUser = await UsersModel.create({ firstName, lastName, email, dob, password }));
     } else {
       const msg = 'That email is already linked with an account';
-      console.log(msg);
       return msg;
     }
   }

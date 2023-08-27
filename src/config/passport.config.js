@@ -20,7 +20,6 @@ export function iniPassport() {
         callbackURL: 'http://localhost:8080/sessions/githubcallback',
       },
       async (accesToken, _, profile, done) => {
-        console.log(profile);
         try {
           const res = await fetch('https://api.github.com/user/emails', {
             headers: {
@@ -40,15 +39,11 @@ export function iniPassport() {
           let user = await usersService.findByEmail(profile.email);
           if (!user) {
             let userCreated = await usersService.create(profile._json.name || profile._json.login || 'noname', 'nolast', profile.email, 'nodate', 'nopass');
-            console.log('User Registration succesful');
             return done(null, userCreated);
           } else {
-            console.log('User already exists');
             return done(null, user);
           }
         } catch (e) {
-          console.log('Error en auth github');
-          console.log(e);
           return done(e);
         }
       }
@@ -60,13 +55,10 @@ export function iniPassport() {
       try {
         const user = await usersService.find(username, password);
         if (!user) {
-          console.log('Email or password are incorrect');
           return done(null, false);
         }
-        console.log(user);
         return done(null, user);
       } catch (err) {
-        console.log(err);
         return done();
       }
     })
@@ -75,25 +67,20 @@ export function iniPassport() {
     'singup',
     new LocalStrategy(
       {
-        passReqToCallback: true, //Give us access to req
+        passReqToCallback: true,
         usernameField: 'email',
       },
       async (req, username, password, done) => {
         try {
           const { firstName, lastName, email, dob } = req.body;
           let user = await usersService.find(username);
-          console.log(user);
           if (user) {
-            console.log('User already exist');
             return done(null, false);
           }
           let userCreated = await usersService.create(firstName, lastName, email, dob, createHash(password));
 
-          console.log(userCreated);
-          console.log('User registration process succesfull');
           return done(null, userCreated);
         } catch (err) {
-          console.log(err);
           return done(err);
         }
       }

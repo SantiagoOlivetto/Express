@@ -24,19 +24,19 @@ class CartsService {
       cart.amount = amount.toFixed(2);
       return cart;
     } catch (err) {
-      console.log(err);
       return err;
     }
   }
   async addProdtoCart(uId, pId) {
     let cart = await CartsModel.findOne({ user: uId });
+
     !cart ? (cart = await this.createCart(uId)) : cart;
     let checkProduct = await productService.findById(pId);
     const { stock } = checkProduct;
-    const productExist = cart.products.find((product) => product.product == pId);
+    const productExist = cart.products.find((product) => product.product.toString() == pId.toString());
 
     if (productExist && productExist.quantity === stock) {
-      throw new error('Cannot add more of this product to the cart due to insufficient stock');
+      throw new Error('Cannot add more of this product to the cart due to insufficient stock');
     } else if (productExist) {
       productExist.quantity++;
     }
@@ -45,7 +45,7 @@ class CartsService {
         product: pId,
         quantity: 1,
       };
-      cart.products.addToSet(product);
+      cart.products.push(product);
     }
     await cart.save();
     return cart;

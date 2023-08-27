@@ -4,18 +4,22 @@ import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import { __dirname } from './utils/utils.js';
 import { routerProducts } from './routes/products.routes.js';
-import { productManager } from './dao/fs/ProductManager.js';
+import { mockRoutes } from './routes/mockProducts.routes.js';
 import { viewRoutes } from './routes/views.routes.js';
 import { routerCarts } from './routes/carts.routes.js';
+import { productManager } from './dao/fs/ProductManager.js';
 import { chatService } from './services/chat.service.js';
 import MongoStore from 'connect-mongo';
 import { iniPassport } from './config/passport.config.js';
 import passport from 'passport';
 import { env } from './config.js';
+import errHandler from './middlewares/err.js';
+import expressAsyncErrors from 'express-async-errors';
+import { logger } from './utils/logger.js';
 
 const app = express();
 const port = env.PORT;
-const httpServer = app.listen(port, () => console.log(`Listening on port http://localhost:${port}/`));
+const httpServer = app.listen(port, () => logger.info(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
 
 app.use(express.json());
@@ -50,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 socketServer.on('connection', (socket) => {
-  console.log(`New connection: ID ${socket.id}`);
+  logger.info(`New connection: ID ${socket.id}`);
 
   // new product reciever
   socket.on('addProduct', async (newProduct) => {
@@ -68,7 +72,7 @@ socketServer.on('connection', (socket) => {
 
   // Chat
   socket.on('user_name_input', (msg) => {
-    console.log(msg);
+    logger.info(msg);
   });
   socket.on('sendMessage', async (msg) => {
     const newMsgRecived = await chatService.newMessagge(msg.sender, msg.msg);
@@ -81,7 +85,7 @@ socketServer.on('connection', (socket) => {
 
   // Show handshake finalization
   socket.on('disconnect', () => {
-    console.log(`Connection finished: ID ${socket.id}`);
+    logger.info(`Connection finished: ID ${socket.id}`);
   });
 });
 
@@ -95,6 +99,10 @@ app.use('/api/products', routerProducts);
 app.use('/api/carts', routerCarts);
 // View endpoint
 app.use('/', viewRoutes);
+// Mock products
+app.use('/mockingproducts', mockRoutes);
+// Errors catcher
+app.use(errHandler);
 
 app.get('*', (req, res) => {
   res.status(404).send("ERROR 404 : The website you were trying to reach couldn't be found on the server.");

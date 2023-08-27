@@ -12,9 +12,8 @@ class UsersService {
     return emailExist ? emailExist : false;
   };
   find(email) {
-    console.log(this.userArr);
     const account = this.userArr.find((user) => user.email === email);
-    return account ? console.log(account) : false;
+    return account ? account : false;
   }
   findById(id) {
     const account = this.userArr.find((user) => user._id === id);
@@ -27,11 +26,9 @@ class UsersService {
     if (this.emailCheck(email) === false) {
       newUser = { _id: '1', firstName, lastName, email, dob, password };
       this.userArr.push(newUser);
-      console.log(this.userArr);
       return newUser;
     } else {
       const msg = 'That email is already linked with an account';
-      console.log(msg);
       return msg;
     }
   };

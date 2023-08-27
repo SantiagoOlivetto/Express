@@ -16,7 +16,7 @@ if (proceed_btn) {
         return data.success ? (window.location.href = `/orders/${data.oid}`) : false;
       })
       .catch((err) => {
-        console.log(err);
+        return err;
       });
   });
 }

@@ -15,6 +15,6 @@ placeOrderBtn.addEventListener('click', (evt) => {
       return data.success ? (window.location.href = `/orders/${oid}/confirmation`) : false;
     })
     .catch((err) => {
-      console.log(err);
+      return err;
     });
 });

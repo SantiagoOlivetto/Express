@@ -8,7 +8,6 @@ class ChatService {
   }
   async getChat() {
     const allMessages = await chatModel.find();
-    console.log(allMessages);
     return allMessages;
   }
 }

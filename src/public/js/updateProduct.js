@@ -25,7 +25,6 @@ update_btn.addEventListener('click', async (evt) => {
       if (data.success) {
         setTimeout(() => {
           update_btn.disabled = false;
-          console.log('Reload');
           location.reload();
         }, 1000);
       }

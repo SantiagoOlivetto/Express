@@ -42,7 +42,6 @@ routerProducts.get('/:id', async (req, res) => {
       ? res.status(200).json({ status: 'succesfull', msg: 'Product by id', data: productById })
       : res.status(404).json({ status: 'Unsuccesfull', msg: `Product with the id:${id} does not exist`, data: {} });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ status: 'Error', msg: err });
   }
 });
@@ -55,7 +54,6 @@ routerProducts.post('/', async (req, res) => {
       return res.status(201).json({ status: 'succesfull', msg: 'Product added to the list', data: newProduct });
     }
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ status: 'Unsuccesfull', msg: 'Creation process failed', data: err });
   }
 });
@@ -66,13 +64,11 @@ routerProducts.delete('/:id', async (req, res) => {
   try {
     const productDelete = await productService.deleteProduct(pid);
     if (productDelete) {
-      console.log(productDelete);
       return res.status(204).header(`X-Product-Message`, 'Product deleted successfully').end();
     } else {
       throw new Error(`Product with the id:${pid} does not exist`);
     }
   } catch (err) {
-    console.log(err);
     return res.status(404).json({ status: 'error', msg: `Product with the id:${pid} do not match a product`, data: 'Error 404' });
   }
 });
