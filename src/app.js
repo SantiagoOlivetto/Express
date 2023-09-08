@@ -16,11 +16,27 @@ import { env } from './config.js';
 import errHandler from './middlewares/err.js';
 import expressAsyncErrors from 'express-async-errors';
 import { logger } from './utils/logger.js';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 
 const app = express();
 const port = env.PORT;
 const httpServer = app.listen(port, () => logger.info(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'ExpressO api documentation',
+      description: 'This project is not about coffees or trains, it is about an E-commerce',
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -1,0 +1,119 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Los usuarios fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        '500':
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un user
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se busca
+          schema:
+            $type: String
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+    put:
+      summary: Actualizar un user a partir del ID
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se busca
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateUser'
+      responses:
+        '200':
+          description: Usuario modificado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Success'
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: aclarando que ocurrio
+      example:
+        status: success
+        message: User updated
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        first_name:
+          type: String
+          description: Primer nombre
+        last_name:
+          type: String
+          description: Apellido
+        email:
+          type: String
+          description: Email de usuario
+        password:
+          type: String
+          description: Password hasheado del user
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        first_name: Adrian
+        last_name: Campo
+        email: atrian@gmail.com
+        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
+  requestBodies:
+    updateUser:
+      type: object
+      properties:
+        first_name:
+          type: String
+          description: Primer nombre
+        last_name:
+          type: String
+          description: Apellido
+        email:
+          type: String
+          description: Email de usuario
+        password:
+          type: String
+          description: Password hasheado del user
+      example:
+        first_name: Adrian
+        last_name: Campo
+        email: atrian@gmail.com
+        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
