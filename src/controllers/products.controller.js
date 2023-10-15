@@ -1,5 +1,8 @@
 import { productService } from '../services/products.service.js';
 import SessionDto from './dto/sessionDto.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 class ProductsController {
   async getAll(req, res) {
     const name = req.session.firstName;
@@ -12,6 +15,7 @@ class ProductsController {
       products,
       name,
       role,
+      url,
     });
   }
 
@@ -35,6 +39,7 @@ class ProductsController {
       thumbnail,
       user,
       pid,
+      url,
     });
   }
   async update(req, res) {
