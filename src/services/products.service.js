@@ -38,8 +38,8 @@ class ProductsService {
       let prevLink = '';
       let nextLink = '';
 
-      products.hasNextPage ? (nextLink = `${url}/api/products?page=${products.nextPage}`) : (nextLink = null);
-      products.hasPrevPage ? (prevLink = `${url}/api/products?page=${products.prevPage}`) : (prevLink = null);
+      products.hasNextPage ? (nextLink = `${url}api/products?page=${products.nextPage}`) : (nextLink = null);
+      products.hasPrevPage ? (prevLink = `${url}api/products?page=${products.prevPage}`) : (prevLink = null);
       products.prevLink = prevLink;
       products.nextLink = nextLink;
       return products;
@@ -48,8 +48,8 @@ class ProductsService {
     linksMaker();
 
     const productsColl = products.docs.map((doc) => doc.toJSON());
-    products.prevLink != null ? (products.prevLink = products.prevLink.replace('/api', '')) : products.prevLink;
-    products.nextLink != null ? (products.nextLink = products.nextLink.replace('/api', '')) : products.nextLink;
+    products.prevLink != null ? (products.prevLink = products.prevLink.replace('/api/', '')) : products.prevLink;
+    products.nextLink != null ? (products.nextLink = products.nextLink.replace('/api/', '')) : products.nextLink;
     products.arrPages = [];
     for (let i = 1; i <= products.totalPages; i++) {
       products.arrPages.push(i);
