@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 export const env = { MODE: process.argv[2] };
 
 switch (process.argv[2]) {
+  case 'PROD':
+    dotenv.config({ path: './.env.production' });
   case 'DEV':
     dotenv.config({ path: './.env.development' });
     break;
