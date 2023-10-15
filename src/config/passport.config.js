@@ -17,7 +17,7 @@ export function iniPassport() {
       {
         clientID: clientId,
         clientSecret: gitKey,
-        callbackURL: 'http://https://expresso-kc5b.onrender.com/sessions/githubcallback',
+        callbackURL: 'https://expresso-kc5b.onrender.com/sessions/githubcallback',
       },
       async (accesToken, _, profile, done) => {
         try {
