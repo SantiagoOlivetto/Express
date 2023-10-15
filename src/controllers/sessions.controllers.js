@@ -15,7 +15,7 @@ class SessionsController {
   }
   getGHCallback(req, res) {
     req.session.user = req.user;
-    return res.redirect(`${url}/dashboard`);
+    return res.redirect(`${url}dashboard`);
   }
   getCurrent(req, res) {
     if (req.session.user) {
