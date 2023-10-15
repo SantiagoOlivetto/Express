@@ -2,7 +2,7 @@ import passport from 'passport';
 import { adminService } from '../services/admin.service.js';
 import { env } from '../config.js';
 
-const url = env.PORT;
+const url = env.URL;
 class LogInController {
   async get(req, res) {
     if (req.session.user) {
@@ -11,7 +11,7 @@ class LogInController {
 
     return res.render('login', {
       style: 'login.css',
-      url,
+      url: url,
     });
   }
   async noGet(req, res) {
