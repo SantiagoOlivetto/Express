@@ -20,3 +20,4 @@ env.PERSISTENCE = process.env.PERSISTENCE;
 env.MONGO_URL = process.env.MONGO_URL;
 env.CLIENT_ID = process.env.CLIENT_ID;
 env.GIT_KEY = process.env.GIT_KEY;
+env.URL = process.env.URL;
