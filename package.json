@@ -5,6 +5,7 @@
   "description": "",
   "main": "./src/app.js",
   "scripts": {
+    "start": "node ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "node ./src/app.js PROD",
     "dev": "nodemon -e yaml,js ./src/app.js DEV",
