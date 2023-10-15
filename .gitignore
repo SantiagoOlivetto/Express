@@ -1,3 +1,5 @@
+.env.production
 .env.development
 .env.production
+.env.testing
 node_modules/
