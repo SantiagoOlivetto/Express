@@ -30,6 +30,7 @@ class ProductsController {
     const { title, price, description, stock, code, thumbnail, category } = product;
     return res.render('productId', {
       style: 'product.css',
+      url: url,
       title,
       price,
       description,
@@ -39,7 +40,6 @@ class ProductsController {
       thumbnail,
       user,
       pid,
-      url,
     });
   }
   async update(req, res) {
