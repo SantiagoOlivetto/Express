@@ -1,4 +1,7 @@
 import SessionDto from './dto/sessionDto.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 
 class DashboardController {
   async get(req, res) {
@@ -9,6 +12,7 @@ class DashboardController {
       first_name,
       role,
       cid,
+      url,
     });
   }
 }

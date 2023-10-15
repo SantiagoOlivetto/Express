@@ -20,6 +20,7 @@ class LogInController {
       return res.render('login', {
         style: 'login.css',
         msg,
+        url,
       });
     }
   }

@@ -1,6 +1,9 @@
 import { cartsService } from '../services/carts.service.js';
 import { orderService } from '../services/orders.service.js';
 import SessionDto from './dto/sessionDto.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 
 class OrdersController {
   async post(req, res) {
@@ -22,6 +25,7 @@ class OrdersController {
       code,
       createdAt,
       oid,
+      url,
     });
   }
   async confirmPost(req, res) {
@@ -36,6 +40,7 @@ class OrdersController {
     return res.render('orderConfirmation', {
       style: 'order.css',
       order,
+      url,
     });
   }
 }

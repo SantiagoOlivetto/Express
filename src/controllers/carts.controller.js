@@ -2,6 +2,9 @@ import CustomError from '../errors/customErr.js';
 import { EErrors } from '../errors/enum.js';
 import { cartsService } from '../services/carts.service.js';
 import SessionDto from './dto/sessionDto.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 
 class CartsController {
   async get(req, res) {
@@ -14,6 +17,7 @@ class CartsController {
         cart,
         cId,
         isEmpty,
+        url,
       });
     } catch (err) {
       return CustomError.createError({ name: 'Cart error', cause: 'Cart id do not match the user', message: err, code: EErrors.DB_READ_ERROR });
