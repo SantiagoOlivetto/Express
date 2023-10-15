@@ -15,5 +15,5 @@ selectElement.value = currentPage;
 
 selectElement.addEventListener('change', () => {
   let selectedPage = selectElement.value;
-  window.location.href = `http://localhost:8080/products?page=${selectedPage}`;
+  window.location.href = `/products?page=${selectedPage}`;
 });
