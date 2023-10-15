@@ -1,13 +1,16 @@
 import passport from 'passport';
 import { adminService } from '../services/admin.service.js';
+import { env } from '../config.js';
 
 class LogInController {
   async get(req, res) {
     if (req.session.user) {
       return res.redirect('/dashboard');
     }
+    const port = env.PORT;
     return res.render('login', {
       style: 'login.css',
+      port,
     });
   }
   async noGet(req, res) {
