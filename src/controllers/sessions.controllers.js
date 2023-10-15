@@ -1,4 +1,7 @@
 import SessionDto from './dto/sessionDto.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 
 class SessionsController {
   getCount(req, res) {
@@ -12,7 +15,7 @@ class SessionsController {
   }
   getGHCallback(req, res) {
     req.session.user = req.user;
-    return res.redirect('http://localhost:8080/dashboard');
+    return res.redirect(`${url}/dashboard`);
   }
   getCurrent(req, res) {
     if (req.session.user) {
