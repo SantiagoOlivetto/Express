@@ -1,4 +1,7 @@
 import { ProductsModel } from '../dao/db/models/products.model.js';
+import { env } from '../config.js';
+
+const url = env.URL;
 
 class ProductsService {
   async deleteProduct(id) {
@@ -35,8 +38,8 @@ class ProductsService {
       let prevLink = '';
       let nextLink = '';
 
-      products.hasNextPage ? (nextLink = `http://localhost:8080/api/products?page=${products.nextPage}`) : (nextLink = null);
-      products.hasPrevPage ? (prevLink = `http://localhost:8080/api/products?page=${products.prevPage}`) : (prevLink = null);
+      products.hasNextPage ? (nextLink = `${url}/api/products?page=${products.nextPage}`) : (nextLink = null);
+      products.hasPrevPage ? (prevLink = `${url}/api/products?page=${products.prevPage}`) : (prevLink = null);
       products.prevLink = prevLink;
       products.nextLink = nextLink;
       return products;
