@@ -48,8 +48,8 @@ class ProductsService {
     linksMaker();
 
     const productsColl = products.docs.map((doc) => doc.toJSON());
-    products.prevLink != null ? (products.prevLink = products.prevLink.replace('/api/', '')) : products.prevLink;
-    products.nextLink != null ? (products.nextLink = products.nextLink.replace('/api/', '')) : products.nextLink;
+    products.prevLink != null ? (products.prevLink = products.prevLink.replace('/api', '')) : products.prevLink;
+    products.nextLink != null ? (products.nextLink = products.nextLink.replace('/api', '')) : products.nextLink;
     products.arrPages = [];
     for (let i = 1; i <= products.totalPages; i++) {
       products.arrPages.push(i);
