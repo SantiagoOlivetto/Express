@@ -15,7 +15,7 @@ class ProductsController {
       products,
       name,
       role,
-      url,
+      url: url,
     });
   }
 
