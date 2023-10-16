@@ -16,28 +16,16 @@ import { env } from './config.js';
 import errHandler from './middlewares/err.js';
 import expressAsyncErrors from 'express-async-errors';
 import { logger } from './utils/logger.js';
-import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
+import { specs } from './utils/swagger.js';
+import { productService } from './services/products.service.js';
 
-const app = express();
+export const app = express();
 const port = env.PORT;
 const httpServer = app.listen(port, () => logger.info(`Listening on port http://localhost:${port}/`));
 const socketServer = new Server(httpServer);
-
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.1',
-    info: {
-      title: 'ExpressO api documentation',
-      description: 'This project is not about coffees or trains, it is about an E-commerce',
-    },
-  },
-  apis: [`${__dirname}/docs/**/*.yaml`],
-};
-
-const specs = swaggerJSDoc(swaggerOptions);
+// Swagger setup
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -75,15 +63,15 @@ socketServer.on('connection', (socket) => {
   // new product reciever
   socket.on('addProduct', async (newProduct) => {
     const { title, description, category, price, thumbnail, code, stock, status } = newProduct;
-    const adddedProduct = await productManager.addProducts(title, description, category, price, thumbnail, code, stock, status);
+    const adddedProduct = await productService.createProduct(title, description, category, price, thumbnail, code, stock, status);
 
     socket.emit('productAdded', adddedProduct);
   });
 
   // Delete product reciever
   socket.on('deleteProduct', async (productId) => {
-    const deletedProduct = await productManager.deleteProduct(productId);
-    socket.emit('productDeleted', deletedProduct.title);
+    const deletedProduct = await productService.deleteProduct(productId);
+    deletedProduct ? socket.emit('productDeleted', deletedProduct.title) : socket.emit('productDeleted', deletedProduct);
   });
 
   // Chat

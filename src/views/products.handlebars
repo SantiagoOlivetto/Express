@@ -39,6 +39,7 @@
   {{#if products.prodPag.hasNextPage}}
     <a href={{products.prodPag.nextLink}}><ion-icon name='chevron-forward-outline'></ion-icon></a>
   {{/if}}
+  <span>{{products.prodPag.totalPages}}</span>
 </div>
 <a href='{{url}}'>Go back to dashboard</a>
 <script>

@@ -33,6 +33,5 @@ deleteProductForm.addEventListener('submit', (event) => {
 
 socket.on('productDeleted', (deletedProduct) => {
   location.reload();
-
-  alert(`You deleted the item ${deletedProduct} succesfully!`);
+  !deletedProduct ? alert(`Product not found`) : alert(`You deleted the item ${deletedProduct} succesfully!`);
 });

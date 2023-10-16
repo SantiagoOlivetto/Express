@@ -7,7 +7,7 @@ export const authUser = (req, res, next) => {
 };
 
 export const authClient = (req, res, next) => {
-  return req.session.user.role === 'client' ? next() : res.send('Client authentication error');
+  return req.session.user.role === 'client' || 'admin' ? next() : res.send('Client authentication error');
 };
 
 export const authAdmin = (req, res, next) => {

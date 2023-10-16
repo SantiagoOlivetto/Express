@@ -46,7 +46,6 @@ viewRoutes.get('/signup', signUpController.get);
 viewRoutes.post('/signup', signUpController.postSesh);
 
 // LOG IN---------------------------------------
-
 viewRoutes.get('/login', logInController.get);
 viewRoutes.get('/!login', logInController.noGet);
 viewRoutes.post('/login', logInController.post);

@@ -5,8 +5,12 @@ const url = env.URL;
 
 class ProductsService {
   async deleteProduct(id) {
-    const deletedProduct = await ProductsModel.findByIdAndDelete(id);
-    return deletedProduct;
+    try {
+      const deletedProduct = await ProductsModel.findByIdAndDelete(id);
+      return deletedProduct;
+    } catch (err) {
+      return false;
+    }
   }
   async findAll(limit, page, query, sort) {
     let options = {};
@@ -71,7 +75,6 @@ class ProductsService {
     };
 
     const prodPayload = { productsColl, prodPag };
-
     return prodPayload;
   }
   async findById(id) {
